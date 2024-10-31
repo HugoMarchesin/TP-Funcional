@@ -38,20 +38,30 @@ lo cual debe ser una solución que permita agregar futuros hechizos):
     noPuedeGanarle :: Mago -> Mago  -> Bool
     Decimos que el segundo mago no puede ganarle al primero si, luego de hechizarlo con todos los hechizos que conoce (uno atrás del otro) la salud del primer mago sigue siendo la misma.
     -}
-    
+
+import Text.Show.Functions
+
 data Mago = Mago {
     nombre :: String,
     edad :: Int,
     salud :: Int,
-    hechizo :: [Hechizo]
-}
+    hechizo :: [String]
+} deriving(Show)
 
-type Hechizo = Mago -> Mago
-
-lagrimaFenix :: Int -> Hechizo
+lagrimaFenix :: Int -> Mago -> Mago
 lagrimaFenix cantidad mago = mago { salud = salud mago + cantidad }
 
-sectumSempra :: Hechizo
+sectumSempra :: Mago -> Mago
 sectumSempra mago
     | salud mago > 10 = mago { salud = salud mago - 10 }
     | otherwise       = mago { salud = salud mago `div` 2 }
+
+obliviate :: Int -> Mago -> Mago
+obliviate n mago = mago { hechizo = drop n (hechizo mago) }
+
+confundus :: Int -> Mago -> Mago
+confundus n mago
+    | head(hechizo mago) == "lagrimaFenix" = lagrimaFenix n mago
+    | head(hechizo mago) == "sectumSempra" = sectumSempra mago
+    | head(hechizo mago) == "obliviate" = obliviate n mago 
+    | otherwise = error "Error"
