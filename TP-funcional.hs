@@ -67,3 +67,9 @@ mejorHechizoContra mago1 mago2 = elementoMayorValor (\hechizo -> danio mago1 hec
 
 mejorOponente :: Mago -> Academia -> Mago
 mejorOponente mago academia = elementoMayorValor (\oponente -> diferenciaDePoder mago oponente) academia
+
+
+
+--5
+noPuedeGanarle :: Mago -> Mago  -> Bool
+noPuedeGanarle mago1 mago2 = salud mago1 == salud()--falta completar
