@@ -41,27 +41,42 @@ lo cual debe ser una solución que permita agregar futuros hechizos):
 
 import Text.Show.Functions
 
+type Hechizo = (String, Int)
+
 data Mago = Mago {
     nombre :: String,
     edad :: Int,
     salud :: Int,
-    hechizo :: [String]
+    hechizos :: [Hechizo]
 } deriving(Show)
 
-lagrimaFenix :: Int -> Mago -> Mago
-lagrimaFenix cantidad mago = mago { salud = salud mago + cantidad }
+lagrimaFenix :: Hechizo -> Mago -> Mago
+lagrimaFenix hechizo mago = mago { salud = salud mago + snd hechizo }
 
 sectumSempra :: Mago -> Mago
 sectumSempra mago
     | salud mago > 10 = mago { salud = salud mago - 10 }
     | otherwise       = mago { salud = salud mago `div` 2 }
 
-obliviate :: Int -> Mago -> Mago
-obliviate n mago = mago { hechizo = drop n (hechizo mago) }
+obliviate :: Hechizo -> Mago -> Mago
+obliviate hechizo mago = mago { hechizos = drop (snd(hechizo)) (hechizos mago) }
 
-confundus :: Int -> Mago -> Mago
-confundus n mago
-    | head(hechizo mago) == "lagrimaFenix" = lagrimaFenix n mago
-    | head(hechizo mago) == "sectumSempra" = sectumSempra mago
-    | head(hechizo mago) == "obliviate" = obliviate n mago 
+confundus :: Mago -> Mago
+confundus mago
+    | fst(head(hechizos mago)) == "lagrimaFenix" = lagrimaFenix (head(hechizos mago)) mago
+    | fst(head(hechizos mago)) == "sectumSempra" = sectumSempra mago
+    | fst(head(hechizos mago)) == "obliviate" = obliviate (head(hechizos mago)) mago 
     | otherwise = error "Error"
+
+poder :: Mago -> Int
+poder mago = salud mago + (edad mago * length (hechizos mago))
+
+danio :: Mago -> Hechizo -> Int
+danio mago hechizo
+    | fst(hechizo) == "lagrimaFenix" = salud (lagrimaFenix hechizo mago) - salud mago
+    | fst(hechizo) == "sectumSempra" = salud (sectumSempra mago) - salud mago
+    | fst(hechizo) == "obliviate" = salud (obliviate hechizo mago) - salud mago
+    | fst(hechizo) == "confundus" = salud (confundus mago) - salud mago
+
+diferenciaDePoder :: Mago -> Mago -> Int
+diferenciaDePoder mago1 mago2 = abs (poder mago1 - poder mago2)
