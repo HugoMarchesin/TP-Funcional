@@ -70,3 +70,8 @@ type Hechizo = Mago -> Mago
 
 lagrimaFenix :: Int -> Hechizo
 lagrimaFenix cantidad mago = mago { salud = salud mago + cantidad }
+
+sectumSempra :: Hechizo
+sectumSempra mago
+    | salud mago > 10 = mago { salud = salud mago - 10 }
+    | otherwise       = mago { salud = salud mago `div` 2 }
