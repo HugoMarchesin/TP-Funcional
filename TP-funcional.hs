@@ -27,6 +27,12 @@ confundus mago
     | fst(head(hechizos mago)) == "obliviate" = obliviate (head(hechizos mago)) mago 
     | otherwise = error "Error"
 
+
+
+
+
+--Item 2
+
 poder :: Mago -> Int
 poder mago = salud mago + (edad mago * length (hechizos mago))
 
@@ -39,6 +45,12 @@ danio mago hechizo
 
 diferenciaDePoder :: Mago -> Mago -> Int
 diferenciaDePoder mago1 mago2 = abs (poder mago1 - poder mago2)
+
+
+
+
+
+--Item 3
 
 type Academia = [Mago]
 
@@ -53,6 +65,10 @@ todosLosMagosViejosSonNionios academia = all nionio viejos
     viejos = filter (\mago -> edad mago > 16) academia
     nionio mago = length (hechizos mago) > 3 * edad mago
 
+
+
+
+--Item 4
 
 --Esta función retorna el elemento de una lista que tiene el mayor valor en la otra función.
 
@@ -70,6 +86,9 @@ mejorOponente mago academia = elementoMayorValor (\oponente -> diferenciaDePoder
 
 
 
---5
-noPuedeGanarle :: Mago -> Mago  -> Bool
-noPuedeGanarle mago1 mago2 = salud mago1 == salud()--falta completar
+
+--Item 5
+
+noPuedeGanarle :: Mago -> Mago -> Bool
+noPuedeGanarle mago1 mago2 =
+    fold1 (+) [danio (hechizos mago1) mago2] == 0
