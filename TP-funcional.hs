@@ -80,3 +80,16 @@ danio mago hechizo
 
 diferenciaDePoder :: Mago -> Mago -> Int
 diferenciaDePoder mago1 mago2 = abs (poder mago1 - poder mago2)
+
+type Academia = [Mago]
+
+ahiEstaHagrid :: Academia -> Bool
+ahiEstaHagrid [] = False
+ahiEstaHagrid (mago:resto) =
+    (nombre mago == "Hagrid" && null (hechizos mago)) || ahiEstaHagrid resto
+
+todosLosMagosViejosSonNionios :: Academia -> Bool
+todosLosMagosViejosSonNionios academia = all nionio viejos
+  where
+    viejos = filter (\mago -> edad mago > 16) academia
+    nionio mago = length (hechizos mago) > 3 * edad mago
