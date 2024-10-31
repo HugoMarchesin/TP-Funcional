@@ -59,3 +59,14 @@ Se pide resolver los siguientes puntos, aprovechando al máximo los conceptos de
     Decimos que el segundo mago no puede ganarle al primero si, luego de hechizarlo con todos los hechizos que conoce (uno atrás del otro) la salud del primer mago sigue siendo la misma.
     -}
     
+data Mago = Mago {
+    nombre :: String,
+    edad :: Int,
+    salud :: Int,
+    hechizo :: [Hechizo]
+}
+
+type Hechizo = Mago -> Mago
+
+lagrimaFenix :: Int -> Hechizo
+lagrimaFenix cantidad mago = mago { salud = salud mago + cantidad }
