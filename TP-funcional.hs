@@ -91,4 +91,4 @@ mejorOponente mago academia = elementoMayorValor (\oponente -> diferenciaDePoder
 
 noPuedeGanarle :: Mago -> Mago -> Bool
 noPuedeGanarle mago1 mago2 =
-    fold1 (+) [danio (hechizos mago1) mago2] == 0
+    foldl1 (+) (map (danio mago1) (hechizos mago2)) == 0
