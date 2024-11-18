@@ -1,31 +1,27 @@
 import Text.Show.Functions
 
-type Hechizo = (String, Int)
-
 data Mago = Mago {
     nombre :: String,
     edad :: Int,
     salud :: Int,
     hechizos :: [Hechizo]
-} deriving(Show)
+} deriving ( Show)
 
-lagrimaFenix :: Hechizo -> Mago -> Mago
-lagrimaFenix hechizo mago = mago { salud = salud mago + snd hechizo }
+type Hechizo = Mago -> Mago
 
-sectumSempra :: Mago -> Mago
+lanzarLagrimaFenix :: Int -> Hechizo
+lanzarLagrimaFenix cantidad mago = mago { salud = salud mago + cantidad }
+
+sectumSempra :: Hechizo
 sectumSempra mago
     | salud mago > 10 = mago { salud = salud mago - 10 }
     | otherwise       = mago { salud = salud mago `div` 2 }
 
-obliviate :: Hechizo -> Mago -> Mago
-obliviate hechizo mago = mago { hechizos = drop (snd(hechizo)) (hechizos mago) }
+lanzarObliviate :: Int -> Hechizo
+lanzarObliviate n mago = mago { hechizos = drop n (hechizos mago) }
 
-confundus :: Mago -> Mago
-confundus mago
-    | fst(head(hechizos mago)) == "lagrimaFenix" = lagrimaFenix (head(hechizos mago)) mago
-    | fst(head(hechizos mago)) == "sectumSempra" = sectumSempra mago
-    | fst(head(hechizos mago)) == "obliviate" = obliviate (head(hechizos mago)) mago 
-    | otherwise = error "Error"
+confundus :: Hechizo
+confundus mago = (head (hechizos mago)) mago
 
 
 
@@ -37,11 +33,7 @@ poder :: Mago -> Int
 poder mago = salud mago + (edad mago * length (hechizos mago))
 
 danio :: Mago -> Hechizo -> Int
-danio mago hechizo
-    | fst(hechizo) == "lagrimaFenix" = salud (lagrimaFenix hechizo mago) - salud mago
-    | fst(hechizo) == "sectumSempra" = salud (sectumSempra mago) - salud mago
-    | fst(hechizo) == "obliviate" = salud (obliviate hechizo mago) - salud mago
-    | fst(hechizo) == "confundus" = salud (confundus mago) - salud mago
+danio mago hechizo = (salud (hechizo mago) ) - salud mago
 
 diferenciaDePoder :: Mago -> Mago -> Int
 diferenciaDePoder mago1 mago2 = abs (poder mago1 - poder mago2)
@@ -54,10 +46,8 @@ diferenciaDePoder mago1 mago2 = abs (poder mago1 - poder mago2)
 
 type Academia = [Mago]
 
-ahiEstaHagrid :: Academia -> Bool
-ahiEstaHagrid [] = False
-ahiEstaHagrid (mago:resto) =
-    (nombre mago == "Hagrid" && null (hechizos mago)) || ahiEstaHagrid resto
+ahiEsta :: String -> Int -> Academia -> Bool
+ahiEsta nombreMago cantHechizos academia = any (\ mago -> and [nombre mago == nombreMago, length (hechizos mago) == cantHechizos]) academia
 
 todosLosMagosViejosSonNionios :: Academia -> Bool
 todosLosMagosViejosSonNionios academia = all nionio viejos
@@ -79,10 +69,10 @@ elementoMayorValor valor (elemento1:elemento2:elementoS)
       | otherwise = elementoMayorValor valor (elemento2 : elementoS)
 
 mejorHechizoContra :: Mago -> Mago -> Hechizo
-mejorHechizoContra mago1 mago2 = elementoMayorValor (\hechizo -> danio mago1 hechizo) (hechizos mago2)
+mejorHechizoContra mago1 mago2 = elementoMayorValor (danio mago1) (hechizos mago2)
 
 mejorOponente :: Mago -> Academia -> Mago
-mejorOponente mago academia = elementoMayorValor (\oponente -> diferenciaDePoder mago oponente) academia
+mejorOponente mago academia = elementoMayorValor (diferenciaDePoder mago) academia
 
 
 
