@@ -1,5 +1,7 @@
 import Spec
 import PdePreludat
+import TPFuncional
+import Test
 
 main :: IO ()
-main = correrTests
+main = Test.correrTests

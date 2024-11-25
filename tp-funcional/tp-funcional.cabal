@@ -27,6 +27,8 @@ library
   exposed-modules:
       Library
       Spec
+      Test
+      TPFuncional
   hs-source-dirs:
       src
   default-extensions:
