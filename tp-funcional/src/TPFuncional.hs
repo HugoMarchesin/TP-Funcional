@@ -99,7 +99,10 @@ mago3 :: Mago
 mago3 = Mago "Hagrid" 30 50 []
 
 mago4 :: Mago
-mago4 = Mago "Chispitas" 115 70 [confundus, lanzarLagrimaFenix 15, sectumSempra]
+mago4 = Mago "Chispitas" 115 8 [confundus, lanzarLagrimaFenix 15, sectumSempra]
+
+mago5 :: Mago
+mago5 = Mago "Pepin" 100 20 [lanzarObliviate 1]
 
 academia :: Academia
 academia = [mago1, mago2, mago3, mago4]
