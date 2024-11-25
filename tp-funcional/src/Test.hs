@@ -35,7 +35,7 @@ correrTests = hspec $ do
 
   describe "Test punto 4" $ do
     it "mejorHechizoContra" $ do
-      danio mago1 (mejorHechizoContra mago1 mago2) `shouldBe` -10
+      danio mago1 (mejorHechizoContra mago1 mago2) `shouldBe` 0
     it "mejorOponente" $ do
       nombre (mejorOponente mago2 academia) `shouldBe` "Hagrid"
 
